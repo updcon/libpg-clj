@@ -12,3 +12,6 @@
                  [danlentz/clj-uuid "0.1.7"]
                  [cheshire "5.8.0"]
                  [joda-time "2.10"]])
+
+(cemerick.pomegranate.aether/register-wagon-factory!
+  "http" #(org.apache.maven.wagon.providers.http.HttpWagon.))
