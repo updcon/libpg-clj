@@ -3,9 +3,9 @@
   :url "https://github.com/your-github-name/libpg-clj"
   :license {:name "Eclipse Public License"
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/java.jdbc "0.7.7"]
+  :dependencies [[org.clojure/java.jdbc "0.7.8"]
                  ;; PostgreSQL
-                 [org.postgresql/postgresql "42.2.4"]
+                 [org.postgresql/postgresql "42.2.5"]
                  [nilenso/honeysql-postgres "0.2.4"]
                  [com.mchange/c3p0 "0.9.5.2"]
                  ;; Data helpers
