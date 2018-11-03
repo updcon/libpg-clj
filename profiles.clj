@@ -1,6 +1,8 @@
 {:dev      {:plugins             [[lein-ancient "0.6.15"]
                                   [org.apache.maven.wagon/wagon-http-lightweight "3.0.0"]]
-            :deploy-repositories [["private-jars" "http://local.repo:9180/repo"]]}
+            :deploy-repositories [["private-jars-scp" {:url              "scp://local.repo/home/clojar/data/dev_repo/"
+                                                       :username         "clojar"
+                                                       :private-key-file :env/clojure_ssh_key}]]}
  :provided {:dependencies [[org.clojure/clojure "1.9.0"]
                            ;; Logger
                            [ch.qos.logback/logback-classic "1.2.3"
