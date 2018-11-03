@@ -3,6 +3,7 @@
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
             :url  "https://dkdhub.com/licenses/base.html"}
+  :main libpg-clj.core
   :omit-source true
   :dependencies [[org.clojure/java.jdbc "0.7.8"]
                  ;; PostgreSQL

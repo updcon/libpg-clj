@@ -131,3 +131,5 @@
   (defn query-explain [pool query]
     (jdbc/query pool query {:explain?   "EXPLAIN ANALYZE"
                             :explain-fn clojure.pprint/pprint})))
+
+(defn -main [& args])
