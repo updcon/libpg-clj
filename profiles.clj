@@ -1,6 +1,6 @@
 {:dev      {:plugins             [[lein-ancient "0.6.15"]
                                   [org.apache.maven.wagon/wagon-http-lightweight "3.0.0"]]
-            :deploy-repositories [["private-jars" "http://10.10.3.4:9180/repo"]]}
+            :deploy-repositories [["private-jars" "http://local.repo:9180/repo"]]}
  :provided {:dependencies [[org.clojure/clojure "1.9.0"]
                            ;; Logger
                            [ch.qos.logback/logback-classic "1.2.3"

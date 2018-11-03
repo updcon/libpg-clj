@@ -1,8 +1,8 @@
-(defproject libpg-clj "0.0.1-SNAPSHOT"
-  :description "A Clojure library designed to support..."
-  :url "https://github.com/your-github-name/libpg-clj"
-  :license {:name "Eclipse Public License"
-            :url  "http://www.eclipse.org/legal/epl-v10.html"}
+(defproject libpg-clj "0.0.1"
+  :description "DKD commons for PostgreSQL"
+  :url "https://dkdhub.com"
+  :license {:name "Proprietary"
+            :url  "https://dkdhub.com/licenses/base.html"}
   :dependencies [[org.clojure/java.jdbc "0.7.8"]
                  ;; PostgreSQL
                  [org.postgresql/postgresql "42.2.5"]
@@ -10,8 +10,8 @@
                  [com.mchange/c3p0 "0.9.5.2"]
                  ;; Data helpers
                  [danlentz/clj-uuid "0.1.7"]
-                 [cheshire "5.8.0"]
-                 [joda-time "2.10"]])
+                 [cheshire "5.8.1"]
+                 [joda-time "2.10.1"]])
 
 (cemerick.pomegranate.aether/register-wagon-factory!
   "http" #(org.apache.maven.wagon.providers.http.HttpWagon.))

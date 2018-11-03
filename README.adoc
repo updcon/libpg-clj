@@ -1,23 +1,11 @@
 = libpg-clj
 
-A Clojure library designed to support …
-
-== Usage
-
-Add libpg-clj dependence:
-
-image:https://img.shields.io/clojars/v/libpg-clj.svg[Clojars Project,link=https://clojars.org/libpg-clj]
-
-Examples:
-
-[source,clojure]
-----
-(map prn ["This" "is" "example"])
-
-----
+DKD commons for PostgreSQL
 
 == License
 
-CopyLeft © 2018 NoBody
+CopyRights:
 
-Distributed under the Eclipse Public License .
+ © 2018 UPD Consulting
+ © 2018 Fern Flower Lab
+
