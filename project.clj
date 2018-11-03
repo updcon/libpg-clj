@@ -1,8 +1,9 @@
-(defproject libpg-clj "0.0.1"
+(defproject com.dkdhub/libpg-clj "0.0.1"
   :description "DKD commons for PostgreSQL"
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
             :url  "https://dkdhub.com/licenses/base.html"}
+  :omit-source true
   :dependencies [[org.clojure/java.jdbc "0.7.8"]
                  ;; PostgreSQL
                  [org.postgresql/postgresql "42.2.5"]

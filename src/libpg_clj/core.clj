@@ -1,18 +1,21 @@
 (ns libpg-clj.core
   (:gen-class)
   (:require [honeysql.format :as hfmt]
-            [clojure.java.jdbc :refer [IResultSetReadColumn]]
+            [honeysql.core :as sql :refer [raw call]]
+            [clojure.java.jdbc :refer [execute! query IResultSetReadColumn]]
             [cheshire.core :as json]
-            [clj-uuid :as uuid])
+            [clj-uuid :as uuid]
+            [clojure.string :as str])
   (:import (com.mchange.v2.c3p0 ComboPooledDataSource)
            (org.postgresql.util PGobject)))
 
 (defn make-pool [config]
   (let [cpds (doto (ComboPooledDataSource.)
                (.setDriverClass (:classname config))
-               (.setJdbcUrl (format "jdbc:%s:%s?prepareThreshold=0"
-                                    (:subprotocol config)
-                                    (:subname config)))
+               (.setJdbcUrl (clojure.core/format
+                              "jdbc:%s:%s?prepareThreshold=0"
+                              (:subprotocol config)
+                              (:subname config)))
                (.setUser (:user config))
                (.setPassword (:password config))
                ;; expire excess connections after 30 minutes of inactivity:
@@ -38,6 +41,25 @@
   [p & fields]
   `(dissoc ~p ~@fields))
 
+(defn jdbc-exec [conn query & [_]]
+  (first (execute! conn query)))
+
+(defmacro h-cast
+  [value type]
+  `(call :cast ~value ~type))
+
+(defn explain-enum [conn name]
+  (->> [nil (keyword name)]
+       (apply call :cast)
+       (call :enum_range)
+       (call :unnest)
+       (assoc {} :select)
+       (apply sql/format)
+       (query conn)
+       (mapv :unnest)))
+
+;; -- extend protocol
+
 (defmethod hfmt/fn-handler "ilike" [_ col qstr]
   (str (hfmt/to-sql col) " ILIKE " (hfmt/to-sql qstr)))
 
@@ -50,3 +72,62 @@
         "json" (json/parse-string value true)
         "jsonb" (json/parse-string value true)
         value))))
+
+(defmethod hfmt/fn-handler "contains" [_ left right]
+  (str (hfmt/to-sql left) " @> " (hfmt/to-sql right)))
+
+(defmethod hfmt/fn-handler "array-exists" [_ left right]
+  (str (hfmt/to-sql left) " ?? " (hfmt/to-sql right)))
+
+(defmethod hfmt/fn-handler "array-exists-any" [_ left right]
+  (str (hfmt/to-sql left) " ??| " (hfmt/to-sql right)))
+
+(defmethod hfmt/fn-handler "cast" [_ value type]
+  (str (hfmt/to-sql value) "::" (hfmt/to-sql type)))
+
+(defmethod hfmt/fn-handler "->" [_ field key]
+  (clojure.core/format "(%s::jsonb->'%s')" (hfmt/to-sql field) (name key)))
+
+(defmethod hfmt/fn-handler "->>" [_ field key]
+  (clojure.core/format "(%s::jsonb->>'%s')" (hfmt/to-sql field) (name key)))
+
+(defmethod hfmt/fn-handler "#>" [_ field path]
+  (clojure.core/format "(%s::jsonb#>'{%s}')"
+                       (hfmt/to-sql field)
+                       (str/join "," (map name path))))
+
+(defmethod hfmt/fn-handler "#>>" [_ field path]
+  (clojure.core/format "(%s::jsonb#>>'{%s}')"
+                       (hfmt/to-sql field)
+                       (str/join "," (map name path))))
+
+(declare print-statement query-explain)
+
+(defn json>
+  ([field path]
+   (call (if (vector? path) :#> :->) field path))
+  ([field path type]
+   (h-cast (json> field path) type)))
+
+(defn json>>
+  ([field path]
+   (call (if (vector? path) :#>> :->>) field path))
+  ([field path type]
+   (h-cast (json>> field path) type)))
+
+(def total (raw "COUNT(*) OVER ()"))
+
+(defn json-agg [inner-select]
+  {:select [(call :json_agg :x)]
+   :from   [[inner-select :x]]})
+
+(comment
+  "Helpers for query debugging"
+  (defn print-statement [pool [sql & params]]
+    (doto (jdbc/prepare-statement (jdbc/get-connection pool) sql)
+      (#'jdbc/dft-set-parameters params)
+      clojure.pprint/pprint))
+
+  (defn query-explain [pool query]
+    (jdbc/query pool query {:explain?   "EXPLAIN ANALYZE"
+                            :explain-fn clojure.pprint/pprint})))
