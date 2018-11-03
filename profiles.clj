@@ -1,4 +1,5 @@
 {:dev      {:plugins             [[lein-ancient "0.6.15"]
+                                  [org.apache.maven.wagon/wagon-ssh-external "3.0.0"]
                                   [org.apache.maven.wagon/wagon-http-lightweight "3.0.0"]]
             :deploy-repositories [["private-jars-scp" {:url              "scp://local.repo/home/clojar/data/dev_repo/"
                                                        :username         "clojar"
