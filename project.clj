@@ -16,3 +16,7 @@
 
 (cemerick.pomegranate.aether/register-wagon-factory!
   "http" #(org.apache.maven.wagon.providers.http.HttpWagon.))
+
+(cemerick.pomegranate.aether/register-wagon-factory!
+  "scp" #(let [c (resolve 'org.apache.maven.wagon.providers.ssh.external.ScpExternalWagon)]
+           (clojure.lang.Reflector/invokeConstructor c (into-array []))))
