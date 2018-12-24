@@ -1,4 +1,4 @@
-(defproject com.dkdhub/libpg-clj "0.0.1"
+(defproject com.dkdhub/libpg-clj "0.0.2"
   :description "DKD commons for PostgreSQL"
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
@@ -8,7 +8,7 @@
   :dependencies [[org.clojure/java.jdbc "0.7.8"]
                  ;; PostgreSQL
                  [org.postgresql/postgresql "42.2.5"]
-                 [nilenso/honeysql-postgres "0.2.4"]
+                 [nilenso/honeysql-postgres "0.2.5"]
                  [com.mchange/c3p0 "0.9.5.2"]
                  ;; Data helpers
                  [danlentz/clj-uuid "0.1.7"]
