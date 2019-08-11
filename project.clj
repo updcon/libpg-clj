@@ -3,7 +3,6 @@
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
             :url  "https://dkdhub.com/licenses/base.html"}
-  :omit-source true
   :dependencies [[org.clojure/java.jdbc "0.7.9"]
                  ;; PostgreSQL
                  [org.postgresql/postgresql "42.2.6"]
