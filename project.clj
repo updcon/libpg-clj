@@ -1,17 +1,17 @@
-(defproject com.dkdhub/libpg-clj "0.0.4"
+(defproject com.dkdhub/libpg-clj "0.0.5"
   :description "DKD commons for PostgreSQL"
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
             :url  "https://dkdhub.com/licenses/base.html"}
-  :dependencies [[org.clojure/java.jdbc "0.7.10"]
+  :dependencies [[org.clojure/java.jdbc "0.7.11"]
                  ;; PostgreSQL
-                 [org.postgresql/postgresql "42.2.8"]
+                 [org.postgresql/postgresql "42.2.12"]
                  [nilenso/honeysql-postgres "0.2.6"]
-                 [com.mchange/c3p0 "0.9.5.4"]
+                 [com.mchange/c3p0 "0.9.5.5"]
                  ;; Data helpers
                  [danlentz/clj-uuid "0.1.9"]
-                 [cheshire "5.9.0"]
-                 [joda-time "2.10.4"]])
+                 [cheshire "5.10.0"]
+                 [joda-time "2.10.6"]])
 
 (cemerick.pomegranate.aether/register-wagon-factory!
   "http" #(org.apache.maven.wagon.providers.http.HttpWagon.))
