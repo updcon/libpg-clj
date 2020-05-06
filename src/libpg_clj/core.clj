@@ -5,9 +5,11 @@
             [clojure.java.jdbc :refer [execute! query IResultSetReadColumn]]
             [cheshire.core :as json]
             [clj-uuid :as uuid]
-            [clojure.string :as str])
+            [clojure.string :as str]
+            [clojure.java.jdbc :as jdbc])
   (:import (com.mchange.v2.c3p0 ComboPooledDataSource)
-           (org.postgresql.util PGobject)))
+           (org.postgresql.util PGobject)
+           (clojure.lang Keyword)))
 
 (defn make-pool [config]
   (let [cpds (doto (ComboPooledDataSource.)
@@ -57,6 +59,21 @@
        (apply sql/format)
        (query conn)
        (mapv :unnest)))
+
+;; -- extend types
+
+(defn kw->pgenum [kw]
+  (let [type (-> (namespace kw)
+                 (s/replace "-" "_"))
+        value (name kw)]
+    (doto (PGobject.)
+      (.setType type)
+      (.setValue value))))
+
+(extend-type Keyword
+  jdbc/ISQLValue
+  (sql-value [kw]
+    (kw->pgenum kw)))
 
 ;; -- extend protocol
 
