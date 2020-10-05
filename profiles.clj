@@ -12,5 +12,5 @@
                            [org.slf4j/jcl-over-slf4j "1.7.30"]
                            [ch.qos.logback/logback-classic "1.2.3"
                             :exclusions [org.slf4j/slf4j-api]]
-                           [com.taoensso/timbre "4.10.0"]]}
+                           [com.taoensso/timbre "5.1.0"]]}
  :jar      {:aot :all}}
