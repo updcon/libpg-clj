@@ -64,7 +64,7 @@
 
 (defn kw->pgenum [kw]
   (let [type (-> (namespace kw)
-                 (s/replace "-" "_"))
+                 (str/replace "-" "_"))
         value (name kw)]
     (doto (PGobject.)
       (.setType type)
