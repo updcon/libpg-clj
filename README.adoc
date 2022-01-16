@@ -6,6 +6,6 @@ DKD commons for PostgreSQL
 
 CopyRights:
 
- © 2018 UPD Consulting
+ © 2018-2022 UPD Consulting
  © 2018 Fern Flower Lab
 
