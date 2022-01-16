@@ -1,4 +1,4 @@
-(defproject com.dkdhub/libpg-clj "0.0.7"
+(defproject com.dkdhub/libpg-clj "0.0.8"
   :description "DKD commons for PostgreSQL"
   :url "https://dkdhub.com"
   :license {:name "Proprietary"
