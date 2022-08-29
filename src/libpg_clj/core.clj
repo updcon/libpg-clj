@@ -11,13 +11,16 @@
            (org.postgresql.util PGobject)
            (clojure.lang Keyword)))
 
+;; -- c3p0 pool
+
 (defn make-pool [config]
   (let [cpds (doto (ComboPooledDataSource.)
                (.setDriverClass (:classname config))
                (.setJdbcUrl (clojure.core/format
-                              "jdbc:%s:%s?prepareThreshold=0"
+                              "jdbc:%s:%s?prepareThreshold=%d"
                               (:subprotocol config)
-                              (:subname config)))
+                              (:subname config)
+                              (get config :prepare-threshold 0)))
                (.setUser (:user config))
                (.setPassword (:password config))
                ;; expire excess connections after 30 minutes of inactivity:
@@ -30,6 +33,7 @@
     {:datasource cpds}))
 
 ;; -- helpers
+
 (defn convert-enum [tk T p]
   (or (when-let [g (get p tk)]
         (assoc p tk [g (get T tk)]))
@@ -137,14 +141,3 @@
 (defn json-agg [inner-select]
   {:select [(call :json_agg :x)]
    :from   [[inner-select :x]]})
-
-(comment
-  "Helpers for query debugging"
-  (defn print-statement [pool [sql & params]]
-    (doto (jdbc/prepare-statement (jdbc/get-connection pool) sql)
-      (#'jdbc/dft-set-parameters params)
-      clojure.pprint/pprint))
-
-  (defn query-explain [pool query]
-    (jdbc/query pool query {:explain?   "EXPLAIN ANALYZE"
-                            :explain-fn clojure.pprint/pprint})))
