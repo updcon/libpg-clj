@@ -1,12 +1,7 @@
 = libpg-clj
 
-DKD commons for PostgreSQL
+DKD commons for PostgreSQL written in Clojure. The metter is to make PG interactions more frictionless.
 
 == License
 
-CopyRights:
-
- © 2018-2022 UPD Consulting
- © 2018-2022 Fern Flower Lab
-
-Distributed under the Proprietary DKD License only.
+Distributed under the MIT License.
