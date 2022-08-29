@@ -1,6 +1,6 @@
 = libpg-clj
 
-DKD commons for PostgreSQL written in Clojure. The metter is to make PG interactions more frictionless.
+DKD commons for PostgreSQL written in Clojure. The matter is to make PG interactions more frictionless
 
 == License
 
