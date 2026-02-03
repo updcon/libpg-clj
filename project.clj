@@ -10,5 +10,5 @@
                  [com.mchange/c3p0 "0.11.2"]
                  ;; Data helpers
                  [danlentz/clj-uuid "0.2.0"]
-                 [cheshire "6.1.0"]
-                 [joda-time "2.14.0"]])
+                 [cheshire "6.1.0"]]
+  :test-paths ["test"])
