@@ -1,4 +1,4 @@
-(defproject ai.z7/libpg-clj "0.1.0"
+(defproject ai.z7/libpg-clj "0.1.1"
   :description "DKD commons for PostgreSQL in Clojure"
   :url "https://dkdhub.com"
   :license {:name "MIT"
