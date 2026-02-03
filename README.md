@@ -186,7 +186,7 @@ This library extends HoneySQL with PostgreSQL-specific operators:
 | `:ilike` | `ILIKE` | `(call :ilike :name "test%")` => `name ILIKE 'test%'` |
 | `:contains` | `@>` | `(call :contains :tags val)` => `tags @> val` |
 | `:array-exists` | `??` | `(call :array-exists :data "key")` => `data ?? 'key'` |
-| `:array-exists-any` | `??|` | `(call :array-exists-any :data arr)` => `data ??| arr` |
+| `:array-exists-any` | `??\|` | `(call :array-exists-any :data arr)` => `data ??\| arr` |
 | `:cast` | `::` | `(call :cast :val :integer)` => `val::integer` |
 | `:->` | `->` | `(call :-> :data :key)` => `(data::jsonb->'key')` |
 | `:->>` | `->>` | `(call :->> :data :key)` => `(data::jsonb->>'key')` |
