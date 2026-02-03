@@ -14,9 +14,10 @@
   Prints the PreparedStatement object via pprint, showing the SQL
   with parameters bound."
   [pool [sql & params]]
-  (doto (jdbc/prepare-statement (jdbc/get-connection pool) sql)
-    (#'jdbc/dft-set-parameters params)
-    clojure.pprint/pprint))
+  (with-open [conn (jdbc/get-connection pool)]
+    (with-open [stmt (jdbc/prepare-statement conn sql)]
+      (#'jdbc/dft-set-parameters stmt params)
+      (clojure.pprint/pprint stmt))))
 
 (defn query-explain
   "Executes EXPLAIN ANALYZE on a query and pretty-prints the execution plan.

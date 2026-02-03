@@ -37,6 +37,20 @@ ai.z7/libpg-clj {:mvn/version "0.1.0"}
 ;; Use with clojure.java.jdbc
 (require '[clojure.java.jdbc :as jdbc])
 (jdbc/query pool ["SELECT * FROM users"])
+
+;; Close when done
+(pg/close-pool pool)
+----
+
+=== Using with-open (Recommended)
+
+The connection pool implements `Closeable`, so you can use it with `with-open` for automatic resource management:
+
+[source,clojure]
+----
+(with-open [pool (pg/make-pool config)]
+  (jdbc/query pool ["SELECT * FROM users"]))
+;; Pool is automatically closed when exiting the block
 ----
 
 == API Reference
@@ -59,7 +73,21 @@ Creates a c3p0 connection pool for PostgreSQL.
             :prepare-threshold 0})  ; optional, default 0
 ----
 
-Returns a map with `:datasource` key suitable for use with `clojure.java.jdbc`.
+Returns a `ConnectionPool` record (implements `Closeable`) with `:datasource` key, suitable for use with `clojure.java.jdbc` and `with-open`.
+
+==== `close-pool`
+
+Closes a connection pool, releasing all resources.
+
+[source,clojure]
+----
+(close-pool pool)
+
+;; Equivalent to:
+(.close pool)
+
+;; Or use with-open for automatic cleanup
+----
 
 === Data Helpers
 

@@ -9,9 +9,15 @@
             [clojure.java.jdbc :as jdbc])
   (:import (com.mchange.v2.c3p0 ComboPooledDataSource)
            (org.postgresql.util PGobject)
-           (clojure.lang Keyword)))
+           (clojure.lang Keyword)
+           (java.io Closeable)))
 
 ;; -- c3p0 pool
+
+(defrecord ConnectionPool [datasource]
+  Closeable
+  (close [_]
+    (.close datasource)))
 
 (defn make-pool
   "Creates a c3p0 connection pool for PostgreSQL.
@@ -26,7 +32,12 @@
     :max-pool          - Maximum pool size
     :prepare-threshold - PreparedStatement threshold (default 0)
 
-  Returns a map with :datasource key suitable for use with clojure.java.jdbc."
+  Returns a ConnectionPool record (implements Closeable) with :datasource key,
+  suitable for use with clojure.java.jdbc and with-open.
+
+  Example:
+    (with-open [pool (make-pool config)]
+      (jdbc/query pool [\"SELECT 1\"]))"
   [config]
   (let [cpds (doto (ComboPooledDataSource.)
                (.setDriverClass (:classname config))
@@ -44,7 +55,17 @@
                (.setInitialPoolSize (:min-pool config))
                (.setMinPoolSize (:min-pool config))
                (.setMaxPoolSize (:max-pool config)))]
-    {:datasource cpds}))
+    (->ConnectionPool cpds)))
+
+(defn close-pool
+  "Closes a connection pool, releasing all resources.
+
+  Parameters:
+    pool - A ConnectionPool created by make-pool
+
+  Can also use (.close pool) or (with-open [pool (make-pool config)] ...)."
+  [pool]
+  (.close pool))
 
 ;; -- helpers
 
@@ -185,8 +206,6 @@
   (clojure.core/format "(%s::jsonb#>>'{%s}')"
                        (hfmt/to-sql field)
                        (str/join "," (map name path))))
-
-(declare print-statement query-explain)
 
 (defn json>
   "JSONB path accessor returning JSON (preserves type).
