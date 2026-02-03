@@ -200,41 +200,15 @@ This library extends HoneySQL with PostgreSQL-specific operators:
 |===
 |Operator |SQL |Example
 
-|`:ilike`
-|`ILIKE`
-|`(call :ilike :name "test%")` -> `name ILIKE 'test%'`
-
-|`:contains`
-|`@>`
-|`(call :contains :tags val)` -> `tags @> val`
-
-|`:array-exists`
-|`??`
-|`(call :array-exists :data "key")` -> `data ?? 'key'`
-
-|`:array-exists-any`
-|`??|`
-|`(call :array-exists-any :data arr)` -> `data ??| arr`
-
-|`:cast`
-|`::`
-|`(call :cast :val :integer)` -> `val::integer`
-
-|`:->`
-|`->`
-|`(call :-> :data :key)` -> `(data::jsonb->'key')`
-
-|`:'->>`
-|`->>`
-|`(call :->> :data :key)` -> `(data::jsonb->>'key')`
-
-|`:#>`
-|`#>`
-|`(call :#> :data [:a :b])` -> `(data::jsonb#>'{a,b}')`
-
-|`:#>>`
-|`#>>`
-|`(call :#>> :data [:a :b])` -> `(data::jsonb#>>'{a,b}')`
+|`:ilike` |`ILIKE` |`(call :ilike :name "test%")` -> `name ILIKE 'test%'`
+|`:contains` |`@>` |`(call :contains :tags val)` -> `tags @> val`
+|`:array-exists` |`??` |`(call :array-exists :data "key")` -> `data ?? 'key'`
+|`:array-exists-any` |`??\|` |`(call :array-exists-any :data arr)` -> `data ??\| arr`
+|`:cast` |`::` |`(call :cast :val :integer)` -> `val::integer`
+|`:->` |`->` |`(call :-> :data :key)` -> `(data::jsonb->'key')`
+|`:->>` |`->>` |`(call :->> :data :key)` -> `(data::jsonb->>'key')`
+|`:#>` |`#>` |`(call :#> :data [:a :b])` -> `(data::jsonb#>'{a,b}')`
+|`:#>>` |`#>>` |`(call :#>> :data [:a :b])` -> `(data::jsonb#>>'{a,b}')`
 |===
 
 == JSONB Helpers
